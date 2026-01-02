@@ -90,6 +90,8 @@ const pad2 = (n) => String(n).padStart(2, "0");
 
     const STORAGE_KEY = "wedding_rsvp_v1";
 
+    const RSVP_ENDPOINT = "https://script.google.com/macros/s/AKfycbzvHKa94POD2ZFdE2bOwySpRS4t5SRc9h9RZrzyce4je2C5qQJynhMTGyMKiy7scYFp/exec";
+
     function getFormData() {
         const fd = new FormData(form);
 
@@ -192,4 +194,5 @@ const pad2 = (n) => String(n).padStart(2, "0");
     }
   `;
     document.head.appendChild(style);
+
 })();
