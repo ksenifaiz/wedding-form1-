@@ -90,7 +90,6 @@ const pad2 = (n) => String(n).padStart(2, "0");
 
     const STORAGE_KEY = "wedding_rsvp_v1";
 
-    const RSVP_ENDPOINT = "https://script.google.com/macros/s/AKfycbzvHKa94POD2ZFdE2bOwySpRS4t5SRc9h9RZrzyce4je2C5qQJynhMTGyMKiy7scYFp/exec";
 
     function getFormData() {
         const fd = new FormData(form);
@@ -148,25 +147,47 @@ const pad2 = (n) => String(n).padStart(2, "0");
     // Load saved draft
     applyLoaded(load());
 
-    form.addEventListener("submit", (e) => {
-        e.preventDefault();
+    const RSVP_ENDPOINT = "https://script.google.com/macros/s/AKfycbzvHKa94POD2ZFdE2bOwySpRS4t5SRc9h9RZrzyce4je2C5qQJynhMTGyMKiy7scYFp/exec";
 
-        const data = getFormData();
-        const err = validate(data);
+    form.addEventListener("submit", async (e) => {
+  e.preventDefault();
 
-        if (err) {
-            status.textContent = err;
-            status.style.color = "#8A3B3B";
-            // лёгкая подсветка ошибок
-            form.classList.add("shake");
-            setTimeout(() => form.classList.remove("shake"), 450);
-            return;
-        }
+  const data = getFormData();
+  const err = validate(data);
 
-        save(data);
-        status.textContent = "Спасибо! Ваш ответ сохранён. 🤍";
-        status.style.color = "color-mix(in srgb, var(--graphite) 75%, var(--champagne) 25%)";
+  if (err) {
+    status.textContent = err;
+    status.style.color = "#8A3B3B";
+    form.classList.add("shake");
+    setTimeout(() => form.classList.remove("shake"), 450);
+    return;
+  }
+
+  // honeypot (анти-бот)
+  data.website = document.getElementById("website")?.value || "";
+
+  status.textContent = "Отправляем...";
+  status.style.color = "var(--muted)";
+
+  try {
+    const res = await fetch(RSVP_ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
     });
+
+    const json = await res.json();
+    if (!json.ok) throw new Error();
+
+    status.textContent = "Спасибо! Ответ отправлен 🤍";
+    status.style.color =
+      "color-mix(in srgb, var(--graphite) 75%, var(--champagne) 25%)";
+    form.reset();
+  } catch (err) {
+    status.textContent = "Ошибка отправки. Попробуйте позже.";
+    status.style.color = "#8A3B3B";
+  }
+});
 
     fillDemoBtn.addEventListener("click", () => {
         // демо-данные
@@ -196,3 +217,4 @@ const pad2 = (n) => String(n).padStart(2, "0");
     document.head.appendChild(style);
 
 })();
+
