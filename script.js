@@ -170,14 +170,12 @@ const pad2 = (n) => String(n).padStart(2, "0");
   status.style.color = "var(--muted)";
 
   try {
-    const res = await fetch(RSVP_ENDPOINT, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
-
-    const json = await res.json();
-    if (!json.ok) throw new Error();
+    await fetch(RSVP_ENDPOINT, {
+  method: "POST",
+  mode: "no-cors",
+  headers: { "Content-Type": "text/plain;charset=utf-8" },
+  body: JSON.stringify(data),
+});
 
     status.textContent = "Спасибо! Ответ отправлен 🤍";
     status.style.color =
@@ -217,4 +215,5 @@ const pad2 = (n) => String(n).padStart(2, "0");
     document.head.appendChild(style);
 
 })();
+
 
