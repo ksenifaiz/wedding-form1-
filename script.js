@@ -6,8 +6,8 @@
  */
 const WEDDING_DATE = new Date(2026, 7, 24, 16, 0, 0); // 24 Aug 2026 16:00
 
-const LOCATION_NAME = "Villa Verde";
-const LOCATION_ADDRESS = "Набережная, 12, Амстердам";
+const LOCATION_NAME = "Ресторан DR.ZHIVAGO";
+const LOCATION_ADDRESS = "г. Москва ул.Моховая 15/1";
 
 // ====== UTIL ======
 const pad2 = (n) => String(n).padStart(2, "0");
@@ -71,15 +71,7 @@ const pad2 = (n) => String(n).padStart(2, "0");
     // Универсальная ссылка (Google Maps Web)
     mapBtn.href = `https://www.google.com/maps/search/?api=1&query=${q}`;
 
-    copyBtn.addEventListener("click", async () => {
-        try {
-            await navigator.clipboard.writeText(`${LOCATION_NAME}, ${LOCATION_ADDRESS}`);
-            toast.textContent = "Адрес скопирован.";
-        } catch {
-            toast.textContent = "Не удалось скопировать. Выделите адрес вручную.";
-        }
-        setTimeout(() => (toast.textContent = ""), 2200);
-    });
+
 })();
 
 // ====== RSVP (localStorage demo) ======
@@ -150,53 +142,44 @@ const pad2 = (n) => String(n).padStart(2, "0");
     const RSVP_ENDPOINT = "https://script.google.com/macros/s/AKfycbzvHKa94POD2ZFdE2bOwySpRS4t5SRc9h9RZrzyce4je2C5qQJynhMTGyMKiy7scYFp/exec";
 
     form.addEventListener("submit", async (e) => {
-  e.preventDefault();
+        e.preventDefault();
 
-  const data = getFormData();
-  const err = validate(data);
+        const data = getFormData();
+        const err = validate(data);
 
-  if (err) {
-    status.textContent = err;
-    status.style.color = "#8A3B3B";
-    form.classList.add("shake");
-    setTimeout(() => form.classList.remove("shake"), 450);
-    return;
-  }
+        if (err) {
+            status.textContent = err;
+            status.style.color = "#8A3B3B";
+            form.classList.add("shake");
+            setTimeout(() => form.classList.remove("shake"), 450);
+            return;
+        }
 
-  // honeypot (анти-бот)
-  data.website = document.getElementById("website")?.value || "";
+        // honeypot (анти-бот)
+        data.website = document.getElementById("website")?.value || "";
 
-  status.textContent = "Отправляем...";
-  status.style.color = "var(--muted)";
-
-  try {
-    await fetch(RSVP_ENDPOINT, {
-  method: "POST",
-  mode: "no-cors",
-  headers: { "Content-Type": "text/plain;charset=utf-8" },
-  body: JSON.stringify(data),
-});
-
-    status.textContent = "Спасибо! Ответ отправлен 🤍";
-    status.style.color =
-      "color-mix(in srgb, var(--graphite) 75%, var(--champagne) 25%)";
-    form.reset();
-  } catch (err) {
-    status.textContent = "Ошибка отправки. Попробуйте позже.";
-    status.style.color = "#8A3B3B";
-  }
-});
-
-    fillDemoBtn.addEventListener("click", () => {
-        // демо-данные
-        form.querySelector('input[name="attendance"][value="plus1"]').checked = true;
-        document.getElementById("fullName").value = "Иван Иванов";
-        form.querySelector('input[name="drinks"][value="wine"]').checked = true;
-        form.querySelector('input[name="drinks"][value="nonalcohol"]').checked = true;
-        document.getElementById("comment").value = "Без орехов, пожалуйста 🙂";
-        status.textContent = "Пример заполнен — нажмите «Отправить ответ».";
+        status.textContent = "Отправляем...";
         status.style.color = "var(--muted)";
+
+        try {
+            await fetch(RSVP_ENDPOINT, {
+                method: "POST",
+                mode: "no-cors",
+                headers: { "Content-Type": "text/plain;charset=utf-8" },
+                body: JSON.stringify(data),
+            });
+
+            status.textContent = "Спасибо! Ответ отправлен 🤍";
+            status.style.color =
+                "color-mix(in srgb, var(--graphite) 75%, var(--champagne) 25%)";
+            form.reset();
+        } catch (err) {
+            status.textContent = "Ошибка отправки. Попробуйте позже.";
+            status.style.color = "#8A3B3B";
+        }
     });
+
+
 })();
 // OPTIONAL: tiny shake animation via JS class
 (() => {
