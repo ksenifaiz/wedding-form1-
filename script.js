@@ -139,7 +139,7 @@ const pad2 = (n) => String(n).padStart(2, "0");
     // Load saved draft
     applyLoaded(load());
 
-    const RSVP_ENDPOINT = "https://script.google.com/macros/s/AKfycbzvHKa94POD2ZFdE2bOwySpRS4t5SRc9h9RZrzyce4je2C5qQJynhMTGyMKiy7scYFp/exec";
+    const RSVP_ENDPOINT = "https://script.google.com/macros/s/AKfycbxIuAlhsFnIkooRZPuWdiaNHSBHNYFNRL-g9N_qSEDIQLFJvY6PPadzlw7LyA7Rnl6LQQ/exec";
 
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
@@ -198,6 +198,7 @@ const pad2 = (n) => String(n).padStart(2, "0");
     document.head.appendChild(style);
 
 })();
+
 
 
 
