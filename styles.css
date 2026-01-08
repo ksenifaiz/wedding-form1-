@@ -327,7 +327,7 @@ body {
     border-radius: var(--radius);
     background:
         linear-gradient(180deg, rgba(0, 0, 0, .15), rgba(0, 0, 0, .35)),
-        url("location.jpg") center/cover no-repeat;
+        url("location1.jpg") center/cover no-repeat;
     margin-bottom: 24px;
 }
 
@@ -575,3 +575,4 @@ body {
         margin-bottom: 20px;
     }
 }
+
